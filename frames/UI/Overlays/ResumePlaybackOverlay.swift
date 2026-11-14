@@ -90,11 +90,7 @@ public struct ResumePlaybackOverlay: View {
                 .padding(.vertical, 8)
                 .background(
                     Capsule(style: .continuous)
-                        .fill(.ultraThinMaterial)
-                )
-                .background(
-                    Capsule(style: .continuous)
-                        .fill(ShadcnTheme.card.opacity(0.9))
+                        .fill(ShadcnTheme.card)
                 )
                 .overlay(
                     Capsule(style: .continuous)
