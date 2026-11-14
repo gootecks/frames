@@ -480,6 +480,9 @@ struct ContentView: View {
             }
         }
         .preferredColorScheme(themeManager.mode.colorScheme)
+        .onChange(of: engine.currentURL) { _, newURL in
+            windowManager.isPlayerActive = (newURL != nil && !(newURL?.path.isEmpty ?? true))
+        }
     }
 
     private func requestPlayVideo(url: URL) {

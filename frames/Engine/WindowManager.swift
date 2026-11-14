@@ -12,12 +12,13 @@ public enum WindowLayoutState: String, CaseIterable, Sendable {
 
 @MainActor
 @Observable
-public final class WindowManager {
+public final class WindowManager: NSObject, NSWindowDelegate {
     public static let shared = WindowManager()
 
     public var isNativeFullscreen: Bool = false
     public var isWindowedFullscreen: Bool = false
     public var isPictureInPicture: Bool = false
+    public var isPlayerActive: Bool = false
     public var currentLayoutState: WindowLayoutState = .standard
     public var isLiveResizing: Bool = false
     public var isTransitioning: Bool = false
@@ -42,7 +43,8 @@ public final class WindowManager {
     private var prePipWindowFrame: NSRect?
     private var lastDoubleClickTime: TimeInterval = 0
 
-    public init() {
+    public override init() {
+        super.init()
         NSWindow.allowsAutomaticWindowTabbing = false
         setupNotifications()
     }
@@ -78,6 +80,7 @@ public final class WindowManager {
             MainActor.assumeIsolated {
                 if let window = self?.contentWindow(from: notification) {
                     self?.configureWindow(window)
+                    window.delegate = self
                 }
             }
         }
@@ -380,4 +383,12 @@ public final class WindowManager {
         }
         return win
     }
+    public func windowShouldClose(_ sender: NSWindow) -> Bool {
+        if isPlayerActive {
+            NotificationCenter.default.post(name: .returnToDashboardNotification, object: nil)
+            return false
+        }
+        return true
+    }
+
 }
