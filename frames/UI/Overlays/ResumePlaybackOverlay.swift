@@ -104,7 +104,7 @@ public struct ResumePlaybackOverlay: View {
                 .scaleEffect(appeared ? 1 : 0.85)
                 .opacity(appeared ? 1 : 0)
                 .offset(y: appeared ? 0 : 12)
-                .padding(.bottom, 24)
+                .padding(.bottom, 96)
                 .onAppear {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.76)) { appeared = true }
                     withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { pulse = true }
