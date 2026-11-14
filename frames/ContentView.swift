@@ -116,6 +116,30 @@ struct ContentView: View {
                         .ignoresSafeArea()
                     }
 
+                    // Always-available close control (top-right), even when the full chrome is hidden
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button {
+                                returnToDashboard()
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 11, weight: .bold))
+                                    .foregroundStyle(Color.white)
+                                    .frame(width: 26, height: 26)
+                                    .background(Circle().fill(Color.black.opacity(0.55)))
+                                    .overlay(Circle().strokeBorder(Color.white.opacity(0.2), lineWidth: 1))
+                            }
+                            .buttonStyle(.plain)
+                            .pointingHand()
+                            .help("Close (Esc)")
+                            .padding(.top, 12)
+                            .padding(.trailing, 12)
+                        }
+                        Spacer()
+                    }
+                    .zIndex(55)
+
                     // Subtitle Display (unmounted when empty to decouple overlay for direct hardware scanout)
                     if !engine.activeSubtitleText.isEmpty {
                         SubtitleOverlayView(
