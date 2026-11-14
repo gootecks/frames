@@ -43,7 +43,7 @@ public struct ResumePlaybackOverlay: View {
             let resumeX = geo.size.width * CGFloat(min(max(prompt.progress, 0), 1))
 
             ZStack {
-                Color.black.opacity(0.05)
+                Color.black.opacity(0.2)
                     .ignoresSafeArea()
                     .onTapGesture { onCancel() }
 
@@ -79,7 +79,7 @@ public struct ResumePlaybackOverlay: View {
                                     .padding(.horizontal, 8)
                                     .frame(height: 24)
                                     .background(Capsule().fill(ShadcnTheme.cardHover))
-                                    .overlay(Capsule().strokeBorder(ShadcnTheme.border, lineWidth: 1))
+                                    .overlay(Capsule().strokeBorder(ShadcnTheme.primary.opacity(0.6), lineWidth: 1.5))
                             }
                             .buttonStyle(.plain)
                             .pointingHand()
@@ -104,18 +104,18 @@ public struct ResumePlaybackOverlay: View {
                         )
                         .background(
                             Capsule(style: .continuous)
-                                .fill(ShadcnTheme.card.opacity(0.7))
+                                .fill(ShadcnTheme.card.opacity(0.95))
                         )
                         .overlay(
                             Capsule(style: .continuous)
-                                .strokeBorder(ShadcnTheme.border, lineWidth: 1)
+                                .strokeBorder(ShadcnTheme.primary.opacity(0.6), lineWidth: 1.5)
                         )
-                        .shadow(color: .black.opacity(0.35), radius: 14, y: 6)
+                        .shadow(color: .black.opacity(0.5), radius: 20, y: 8)
                     }
                     .scaleEffect(appeared ? 1 : 0.85)
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 10)
-                    .position(x: max(110, min(geo.size.width - 110, resumeX)), y: geo.size.height - 52)
+                    .position(x: max(110, min(geo.size.width - 110, resumeX)), y: geo.size.height - 110)
                 }
                 .onAppear {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.76)) {
