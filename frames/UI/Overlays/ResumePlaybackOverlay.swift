@@ -64,7 +64,7 @@ public struct ResumePlaybackOverlay: View {
 
                     VStack(spacing: 6) {
                         Text("Resume from \(prompt.formattedTime)?")
-                            .font(.system(size: 12, weight: .semibold))
+                            .font(.system(size: 10, weight: .semibold))
                             .foregroundStyle(ShadcnTheme.foreground)
 
                         HStack(spacing: 6) {
@@ -73,7 +73,7 @@ public struct ResumePlaybackOverlay: View {
                                     .font(.system(size: 11, weight: .medium))
                                     .foregroundStyle(ShadcnTheme.foregroundSecondary)
                                     .padding(.horizontal, 10)
-                                    .frame(height: 26)
+                                    .frame(height: 20)
                                     .background(Capsule().fill(ShadcnTheme.cardHover))
                                     .overlay(Capsule().strokeBorder(ShadcnTheme.border, lineWidth: 1))
                             }
@@ -87,7 +87,7 @@ public struct ResumePlaybackOverlay: View {
                                 }
                                 .foregroundStyle(ShadcnTheme.primaryForeground)
                                 .padding(.horizontal, 12)
-                                .frame(height: 26)
+                                .frame(height: 20)
                                 .background(Capsule().fill(isHoveringResume ? ShadcnTheme.primaryHighlight : ShadcnTheme.primary))
                                 .shadow(color: ShadcnTheme.primary.opacity(pulse ? 0.55 : 0.25), radius: pulse ? 10 : 5, y: 3)
                             }
@@ -96,8 +96,8 @@ public struct ResumePlaybackOverlay: View {
                             .onHover { h in isHoveringResume = h }
                         }
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
                     .background(
                         Capsule(style: .continuous)
                             .fill(.ultraThinMaterial)
