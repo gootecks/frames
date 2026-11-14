@@ -9,13 +9,8 @@ public struct ResumePromptData: Identifiable, Sendable {
     public let formattedDuration: String
     public let progress: Double
 
-    public var title: String {
-        url.deletingPathExtension().lastPathComponent
-    }
-
-    public var format: String {
-        url.pathExtension.uppercased()
-    }
+    public var title: String { url.deletingPathExtension().lastPathComponent }
+    public var format: String { url.pathExtension.uppercased() }
 
     public init(url: URL, resumeSeconds: Double, formattedTime: String, formattedDuration: String, progress: Double) {
         self.url = url
@@ -34,14 +29,9 @@ public struct ResumePlaybackOverlay: View {
 
     @State private var isHoveringResume: Bool = false
     @State private var isHoveringStartOver: Bool = false
-    @State private var isHoveringClose: Bool = false
+    @State private var appeared: Bool = false
 
-    public init(
-        prompt: ResumePromptData,
-        onResume: @escaping (URL, Double) -> Void,
-        onStartOver: @escaping (URL) -> Void,
-        onCancel: @escaping () -> Void
-    ) {
+    public init(prompt: ResumePromptData, onResume: @escaping (URL, Double) -> Void, onStartOver: @escaping (URL) -> Void, onCancel: @escaping () -> Void) {
         self.prompt = prompt
         self.onResume = onResume
         self.onStartOver = onStartOver
@@ -50,142 +40,73 @@ public struct ResumePlaybackOverlay: View {
 
     public var body: some View {
         ZStack {
-            // Minimal ambient backdrop
             Color.black.opacity(0.3)
                 .ignoresSafeArea()
-                .onTapGesture {
-                    onCancel()
-                }
+                .onTapGesture { onCancel() }
 
-            // Flat, clean & minimal card (zero drop shadows)
-            VStack(alignment: .leading, spacing: 12) {
-                // Header: Title + Close
-                HStack(alignment: .center, spacing: 8) {
-                    Image(systemName: "clock")
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(ShadcnTheme.foregroundSecondary)
+            VStack {
+                Spacer()
 
-                    Text("Resume Playback?")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(ShadcnTheme.foreground)
-
-                    Spacer()
-
-                    Button {
-                        onCancel()
-                    } label: {
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack(spacing: 10) {
                         ZStack {
-                            RoundedRectangle(cornerRadius: ShadcnTheme.radiusSm, style: .continuous)
-                                .fill(isHoveringClose ? ShadcnTheme.cardHover : Color.black.opacity(0.0001))
-
-                            Image(systemName: "xmark")
-                                .font(.system(size: 10, weight: .medium))
-                                .foregroundStyle(isHoveringClose ? ShadcnTheme.foreground : ShadcnTheme.foregroundMuted)
+                            Circle().fill(ShadcnTheme.primary.opacity(0.18)).frame(width: 32, height: 32)
+                            Image(systemName: "play.fill").font(.system(size: 13, weight: .semibold)).foregroundStyle(ShadcnTheme.primary).offset(x: 1)
                         }
-                        .frame(width: 20, height: 20)
-                        .contentShape(Rectangle())
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Resume Playback").font(.system(size: 14, weight: .semibold)).foregroundStyle(ShadcnTheme.foreground)
+                            Text(prompt.title).font(.system(size: 11, weight: .medium)).foregroundStyle(ShadcnTheme.foregroundSecondary).lineLimit(1).truncationMode(.middle)
+                        }
+                        Spacer()
+                        Button { onCancel() } label: {
+                            Image(systemName: "xmark").font(.system(size: 10, weight: .semibold)).foregroundStyle(ShadcnTheme.foregroundMuted).frame(width: 22, height: 22).background(Circle().fill(ShadcnTheme.cardHover))
+                        }.buttonStyle(.plain).pointingHand().keyboardShortcut(.cancelAction)
                     }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
-                    .pointingHand()
-                    .keyboardShortcut(.cancelAction)
-                    .help("Dismiss (Esc)")
-                    .onHover { h in
-                        isHoveringClose = h
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                Capsule().fill(ShadcnTheme.border.opacity(0.5)).frame(height: 5)
+                                Capsule().fill(LinearGradient(colors: [ShadcnTheme.primary, ShadcnTheme.primary.opacity(0.7)], startPoint: .leading, endPoint: .trailing))
+                                    .frame(width: max(5, geo.size.width * CGFloat(min(max(prompt.progress, 0), 1))), height: 5)
+                            }
+                        }.frame(height: 5)
+                        HStack {
+                            Text(prompt.formattedTime).font(.system(size: 10, weight: .medium, design: .monospaced)).foregroundStyle(ShadcnTheme.foreground)
+                            Spacer()
+                            Text(prompt.formattedDuration).font(.system(size: 10, weight: .medium, design: .monospaced)).foregroundStyle(ShadcnTheme.foregroundMuted)
+                        }
+                    }
+
+                    HStack(spacing: 8) {
+                        Button { onStartOver(prompt.url) } label: {
+                            Text("Start Over").font(.system(size: 12, weight: .medium)).foregroundStyle(ShadcnTheme.foregroundSecondary).frame(maxWidth: .infinity).frame(height: 32)
+                                .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(ShadcnTheme.cardHover))
+                                .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(ShadcnTheme.border, lineWidth: 1))
+                        }.buttonStyle(.plain).pointingHand().keyboardShortcut("r", modifiers: [])
+
+                        Button { onResume(prompt.url, prompt.resumeSeconds) } label: {
+                            HStack(spacing: 5) {
+                                Image(systemName: "play.fill").font(.system(size: 10, weight: .bold))
+                                Text("Resume").font(.system(size: 12, weight: .semibold))
+                            }
+                            .foregroundStyle(ShadcnTheme.primaryForeground).frame(maxWidth: .infinity).frame(height: 32)
+                            .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(isHoveringResume ? ShadcnTheme.primaryHighlight : ShadcnTheme.primary))
+                        }.buttonStyle(.plain).pointingHand().keyboardShortcut(.defaultAction).onHover { h in isHoveringResume = h }
                     }
                 }
-
-                // File name & time left off
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(prompt.title)
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(ShadcnTheme.foreground)
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-
-                    Text("Left off at \(prompt.formattedTime) of \(prompt.formattedDuration)")
-                        .font(.system(size: 11))
-                        .foregroundStyle(ShadcnTheme.foregroundMuted)
-                }
-
-                // Flat progress line
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(ShadcnTheme.border)
-                            .frame(height: 3)
-
-                        Capsule()
-                            .fill(ShadcnTheme.foreground)
-                            .frame(width: max(3, geo.size.width * CGFloat(min(max(prompt.progress, 0.0), 1.0))), height: 3)
-                    }
-                }
-                .frame(height: 3)
-                .padding(.vertical, 2)
-
-                // Clean side-by-side action buttons
-                HStack(spacing: 8) {
-                    // Start Over
-                    Button {
-                        onStartOver(prompt.url)
-                    } label: {
-                        Text("Start Over")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(ShadcnTheme.foregroundSecondary)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 30)
-                            .background(
-                                RoundedRectangle(cornerRadius: ShadcnTheme.radiusSm, style: .continuous)
-                                    .fill(isHoveringStartOver ? ShadcnTheme.cardHover : Color.black.opacity(0.0001))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: ShadcnTheme.radiusSm, style: .continuous)
-                                    .strokeBorder(ShadcnTheme.border, lineWidth: 1)
-                            )
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
-                    .pointingHand()
-                    .keyboardShortcut("r", modifiers: [])
-                    .onHover { h in
-                        isHoveringStartOver = h
-                    }
-
-                    // Resume
-                    Button {
-                        onResume(prompt.url, prompt.resumeSeconds)
-                    } label: {
-                        Text("Resume")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(ShadcnTheme.primaryForeground)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 30)
-                            .background(
-                                RoundedRectangle(cornerRadius: ShadcnTheme.radiusSm, style: .continuous)
-                                    .fill(isHoveringResume ? ShadcnTheme.primaryHighlight : ShadcnTheme.primary)
-                            )
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .contentShape(Rectangle())
-                    .pointingHand()
-                    .keyboardShortcut(.defaultAction)
-                    .onHover { h in
-                        isHoveringResume = h
-                    }
-                }
+                .padding(16)
+                .frame(width: 340)
+                .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(.ultraThinMaterial))
+                .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(ShadcnTheme.card.opacity(0.6)))
+                .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(ShadcnTheme.border, lineWidth: 1))
+                .shadow(color: .black.opacity(0.35), radius: 24, y: 10)
+                .scaleEffect(appeared ? 1 : 0.9)
+                .opacity(appeared ? 1 : 0)
+                .offset(y: appeared ? 0 : 24)
+                .padding(.bottom, 24)
+                .onAppear { withAnimation(.spring(response: 0.4, dampingFraction: 0.76)) { appeared = true } }
             }
-            .padding(14)
-            .frame(width: 320)
-            .background(
-                RoundedRectangle(cornerRadius: ShadcnTheme.radiusMd, style: .continuous)
-                    .fill(ShadcnTheme.card)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: ShadcnTheme.radiusMd, style: .continuous)
-                    .strokeBorder(ShadcnTheme.border, lineWidth: 1)
-            )
         }
     }
 }
