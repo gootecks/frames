@@ -3589,6 +3589,18 @@ public enum FramesTestSuite {
             condition: asyncPipeline.demuxer == nil && asyncPipeline.state == .stopped
         )
 
+        // Stress: rapid open/close/skip must not crash or leave state stuck.
+        let stressPipeline = PlaybackPipeline()
+        var stressOK = true
+        for _ in 0..<5 {
+            if !stressPipeline.loadSync(url: tempMP4URL) { stressOK = false; break }
+            stressPipeline.seek(to: 2.0)
+            stressPipeline.stop()
+            if stressPipeline.demuxer != nil { stressOK = false; break }
+        }
+        assertTest("PlaybackPipeline Rapid Open/Close/Skip Stress", condition: stressOK, "Failed during rapid cycle")
+        stressPipeline.stop()
+
         try? FileManager.default.removeItem(at: tempMP4URL)
         try? FileManager.default.removeItem(at: tempMKVURL2)
         // 12. Real File Hardware Zero-Copy Demuxing via mmap
