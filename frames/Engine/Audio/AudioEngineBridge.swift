@@ -39,6 +39,8 @@ nonisolated public final class AudioEngineBridge: @unchecked Sendable {
     private var minimumSeekPTS: Double = 0.0
     private var scheduledBufferCount: Int = 0
     private var lastScheduledPTS: Double = 0.0
+    private var cachedMasterTime: Double = -1
+    private var cachedMasterTimeDate: CFAbsoluteTime = 0
     
     // MARK: - Lifecycle
     
@@ -266,21 +268,33 @@ nonisolated public final class AudioEngineBridge: @unchecked Sendable {
     
     /// Returns the true monotonic nanosecond-accurate hardware clock time (in seconds).
     public var currentMasterTime: Double {
+        let now = CFAbsoluteTimeGetCurrent()
+        if now - cachedMasterTimeDate < 0.008 {
+            return cachedMasterTime
+        }
         lock.lock()
         defer { lock.unlock() }
         
-        guard isPlaying else { return lastReportedTime }
+        guard isPlaying else {
+            cachedMasterTime = lastReportedTime
+            cachedMasterTimeDate = CFAbsoluteTimeGetCurrent()
+            return lastReportedTime
+        }
         
         if let nodeTime = playerNode.lastRenderTime,
            let playerTime = playerNode.playerTime(forNodeTime: nodeTime),
            playerTime.sampleRate > 0 {
             let current = calculateMasterTimeLocked(playerTime: playerTime)
             lastReportedTime = current
+            cachedMasterTime = current
+            cachedMasterTimeDate = CFAbsoluteTimeGetCurrent()
             return current
         }
         
         // No render clock yet (device switch / unsupported stream). Report invalid
         // so the pipeline falls back to wall-clock timing instead of freezing.
+        cachedMasterTime = -1
+        cachedMasterTimeDate = CFAbsoluteTimeGetCurrent()
         return -1
     }
 }
