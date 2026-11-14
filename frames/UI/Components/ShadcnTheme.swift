@@ -60,17 +60,30 @@ public final class ThemeManager {
     public init() {
         let saved = UserDefaults.standard.string(forKey: key) ?? ThemeMode.system.rawValue
         self.mode = ThemeMode(rawValue: saved) ?? .system
-        applyAppearance()
+        // Defer so NSApp is ready, then follow the system appearance.
+        DispatchQueue.main.async { [weak self] in
+            self?.applyAppearance()
+        }
+        // Re-apply when the system theme changes so "System" mode tracks it.
+        DistributedNotificationCenter.default.addObserver(
+            forName: Notification.Name("AppleInterfaceThemeChangedNotification"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self, self.mode == .system else { return }
+            self.applyAppearance()
+        }
     }
 
     public func applyAppearance() {
+        guard let app = NSApp else { return }
         switch mode {
         case .system:
-            NSApp?.appearance = nil
+            app.appearance = nil
         case .light:
-            NSApp?.appearance = NSAppearance(named: .aqua)
+            app.appearance = NSAppearance(named: .aqua)
         case .dark:
-            NSApp?.appearance = NSAppearance(named: .darkAqua)
+            app.appearance = NSAppearance(named: .darkAqua)
         }
     }
 
