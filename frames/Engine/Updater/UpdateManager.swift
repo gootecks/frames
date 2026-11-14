@@ -109,6 +109,10 @@ public final class UpdateManager: NSObject {
 
         Task {
             do {
+                // Keep the checking state visible long enough for the spinner to render.
+                if manual {
+                    try? await Task.sleep(nanoseconds: 700_000_000)
+                }
                 let release = try await self.fetchRelease(for: self.updateChannel)
                 self.lastCheckedDate = Date()
                 self.processRelease(release, manual: manual)

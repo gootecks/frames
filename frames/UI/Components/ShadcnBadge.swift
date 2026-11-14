@@ -51,9 +51,9 @@ public struct ShadcnBadge: View {
         .padding(.horizontal, 7)
         .padding(.vertical, 2.5)
         .background(backgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: ShadcnTheme.radiusSm, style: .continuous))
+        .clipShape(Capsule())
         .overlay(
-            RoundedRectangle(cornerRadius: ShadcnTheme.radiusSm, style: .continuous)
+            Capsule()
                 .strokeBorder(borderColor, lineWidth: 1)
         )
         .fixedSize(horizontal: true, vertical: false)

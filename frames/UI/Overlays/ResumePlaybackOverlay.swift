@@ -74,7 +74,6 @@ public struct ResumePlaybackOverlay: View {
                         .padding(.horizontal, 10)
                         .frame(height: 22)
                         .background(Capsule().fill(isHoveringResume ? ShadcnTheme.primaryHighlight : ShadcnTheme.primary))
-                        .shadow(color: ShadcnTheme.primary.opacity(pulse ? 0.5 : 0.25), radius: pulse ? 8 : 4, y: 2)
                     }
                     .buttonStyle(.plain)
                     .pointingHand()
@@ -104,7 +103,6 @@ public struct ResumePlaybackOverlay: View {
 
                 .onAppear {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.76)) { appeared = true }
-                    withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { pulse = true }
                 }
             }
         }
