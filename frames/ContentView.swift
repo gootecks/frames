@@ -526,6 +526,7 @@ struct ContentView: View {
     }
 
     private func returnToDashboard() {
+        pendingResumePrompt = nil
         hideControlsTimer?.invalidate()
         if WindowManager.shared.isAnyFullscreen {
             WindowManager.shared.exitAnyFullscreen()
