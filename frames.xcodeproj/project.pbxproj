@@ -142,8 +142,8 @@
 		B9981A90A8E4365A9AD362F1 /* PointerCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PointerCursor.swift"; sourceTree = "<group>"; };
 		4A93AE87A96BD61073FD3861 /* ShadcnButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShadcnButton.swift"; sourceTree = "<group>"; };
 		AA11BB22CC33DD44EE55FF02 /* ShadcnBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShadcnBadge.swift"; sourceTree = "<group>"; };
-		208AD723EA644CF38AED1734 /* frames_native.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "frames_native.h"; sourceTree = "<group>"; };
-		306CE39FE786451EA7C220E5 /* frames_native.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "frames_native.cpp"; sourceTree = "<group>"; };
+		208AD723EA644CF38AED1734 /* frames_native.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "frames/Engine/frames_native.h"; sourceTree = SOURCE_ROOT; };
+		306CE39FE786451EA7C220E5 /* frames_native.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "frames/Engine/frames_native.cpp"; sourceTree = SOURCE_ROOT; };
 		715273E5E5C44C97A75DDB44 /* frames-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "frames-Bridging-Header.h"; sourceTree = "<group>"; };
 		E6068EABAB8736A26617F768 /* ShadcnCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShadcnCommand.swift"; sourceTree = "<group>"; };
 		AA43A3F961654503C7149A23 /* ShadcnTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShadcnTheme.swift"; sourceTree = "<group>"; };
