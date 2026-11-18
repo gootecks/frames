@@ -28,7 +28,8 @@
 
 **Frames** is an ultra-fast, zero-bloat video player and media management dashboard built from the ground up for macOS and Apple Silicon, supporting all M-series hardware from M1 to the latest (M1, M1 Pro, M1 Max, M1 Ultra, M2, M2 Pro, M2 Max, M2 Ultra, M3, M3 Pro, M3 Max, M4, M4 Pro, M4 Max, and beyond).
 
-Traditional desktop video players are often weighed down by multi-hundred-megabyte Electron wrappers or legacy codebases dating back decades. Frames is written in pure **Swift 6 and SwiftUI**, leveraging Apple Silicon's dedicated **VideoToolbox** media decoders and Unified Memory architecture to deliver fluid 60fps / 120fps playback, buttery timeline scrubbing, and sub-second cold starts with minimal battery drain.
+Traditional desktop video players are often weighed down by multi-hundred-megabyte Electron wrappers or legacy codebases dating back decades.
+Frames is written in pure **Swift 6 and SwiftUI**, leveraging Apple Silicon's dedicated **VideoToolbox** media decoders and Unified Memory architecture to deliver fluid 60fps / 120fps playback, buttery timeline scrubbing, and sub-second cold starts with minimal battery drain.
 
 The user interface adheres strictly to the **shadcn `base-luma`/`neutral`** (preset `b1VlK05Q`, with pointer cursor) design language: matte charcoal dark surfaces (`oklch(0.145 0 0)` / `#0a0a0a`), subtle border contours (`oklch(1 0 0 / 10%)`), crisp monochromatic neutral highlights (`oklch(0.985 0 0)` / `#fafafa`), and smooth pill-radius controls.
 
@@ -48,7 +49,8 @@ Install Frames directly on your Mac with a single command — automatically hand
 
 - **Zero-Bloat Custom Architecture**: Built completely from scratch in Swift 6 without VLC or legacy C/C++ media player bloat.
 - **Pure Swift Matroska & WebM Demuxer**: High-performance zero-allocation EBML VINT streaming parser with $O(\log N)$ binary-search keyframe seeking for `.mkv` and `.webm`.
-- **Hardware-First VideoToolbox ASIC Pipeline**: Direct hardware decode for H.264, HEVC (8/10-bit HDR), VP9, AV1, and ProRes. Decoded frames live directly in Apple Silicon Unified Memory (`IOSurface`).
+- **Hardware-First VideoToolbox ASIC Pipeline**: Direct hardware decode for H.264, HEVC (8/10-bit HDR), VP9, AV1, and ProRes.
+  Decoded frames live directly in Apple Silicon Unified Memory (`IOSurface`).
 - **Zero-Copy Metal 3 HDR Presentation**: Custom Metal shaders converting bi-planar NV12/P010 textures to RGB in 16-bit floating point with Rec.709, Rec.2020, and ST 2084 PQ / HLG EOTF optical transfer functions.
 - **120Hz ProMotion CADisplayLink Cadence**: Synced directly with macOS display refresh intervals, eliminating judder, frame tearing, and timing drift.
 - **Bit-Perfect CoreAudio Master Clock**: Hardware-driven audio DAC crystal oscillator timing synchronization keeps video and audio aligned to $< 1\text{ms}$.
@@ -74,7 +76,8 @@ Install Frames directly on your Mac with a single command — automatically hand
 
 ### 5. In-App Production OTA Update Engine
 
-- **Non-Intrusive Update Discovery**: Asynchronous background query against GitHub Releases API with SemVer 2.0.0 parsing. Never forces disruptive silent updates.
+- **Non-Intrusive Update Discovery**: Asynchronous background query against GitHub Releases API with SemVer 2.0.0 parsing.
+  Never forces disruptive silent updates.
 - **Liquid Glass Update Modal**: Sleek adaptive modal displaying version diff (`v1.2.0 → v1.3.0`), release notes highlights, download size, and real-time download progress.
 - **Granular User Control**: "Update & Restart", "Later", and "Skip this version" options, plus manual check affordance in App Menu (`Frames -> Check for Updates...`) and Command Palette.
 - **Atomic Bundle Swap & Clean Restart**: Validates package signature and bundle integrity, atomically replaces the application bundle, cleans quarantine flags, and smoothly restarts.
@@ -127,7 +130,7 @@ build/DerivedData/Build/Products/Debug/frames.app/Contents/MacOS/frames --run-te
 
 ```
 ==========================================
-       FRAMES TEST & OPTIMIZATION SUITE   
+       FRAMES TEST & OPTIMIZATION SUITE
 ==========================================
 
 [1] Testing TimeFormatting...
