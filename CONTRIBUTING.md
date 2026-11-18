@@ -4,8 +4,6 @@ Thank you for your interest in contributing to **Frames** — the high-performan
 
 Please read our [Code of Conduct](CODE_OF_CONDUCT.md) and [Security Policy](SECURITY.md) before contributing.
 
----
-
 ## 🧭 Engineering Principles
 
 1. **Native Performance First**: Zero-copy frame pipelines, direct `CVPixelBuffer` rendering via Metal 3, minimal CPU wakeups, and strictly keeping idle Unified Memory footprint under 150MB.
@@ -14,12 +12,11 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) and [Security Policy](SECU
 4. **Zero-Flake Automated Testing**: Any new subsystem, parser, command, or workflow must come with automated unit and integration tests added to `FramesTestSuite.swift`.
 5. **Zero Compiler Warnings**: All code must build cleanly with **0 errors and 0 warnings** under Swift 6 strict concurrency checking.
 
----
-
 ## 🛠️ Local Development & Environment
 
 - **Prerequisites**: macOS Sonoma (14.0+) or Sequoia (15.0+), Apple Silicon (M1/M2/M3/M4), Xcode 16.0+.
 - **Building via Command Line**:
+
   ```bash
   DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
     -project frames.xcodeproj \
@@ -30,13 +27,13 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) and [Security Policy](SECU
     CODE_SIGNING_ALLOWED=NO \
     build
   ```
+
 - **Running the Test Suite**:
+
   ```bash
   # Execute the 458+ automated tests directly via headless CLI flag
   build/DerivedData/Build/Products/Debug/frames.app/Contents/MacOS/frames --run-tests
   ```
-
----
 
 ## 🌿 Branch Naming & Git Conventions
 
@@ -48,14 +45,14 @@ We follow conventional commit specifications:
 - `docs/...` for documentation enhancements
 - `refactor/...` for code refactoring with no behavioral change
 
----
-
 ## 📬 Pull Request Submission Process
 
 1. Create a descriptive feature branch from `main`:
+
    ```bash
    git checkout -b feat/your-feature-name
    ```
+
 2. Implement your changes maintaining high code quality, Swift 6 idioms, and documentation integrity.
 3. Add unit test assertions in `frames/Tests/FramesTestSuite.swift`.
 4. Run `frames --run-tests` and verify all tests pass with **0 failures and 0 warnings**.
