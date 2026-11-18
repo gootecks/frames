@@ -24,8 +24,6 @@
   <img src="assets/frames-splash.gif" width="720" alt="Frames Splash Animation" />
 </p>
 
----
-
 ## Overview
 
 **Frames** is an ultra-fast, zero-bloat video player and media management dashboard built from the ground up for macOS and Apple Silicon, supporting all M-series hardware from M1 to the latest (M1, M1 Pro, M1 Max, M1 Ultra, M2, M2 Pro, M2 Max, M2 Ultra, M3, M3 Pro, M3 Max, M4, M4 Pro, M4 Max, and beyond).
@@ -33,8 +31,6 @@
 Traditional desktop video players are often weighed down by multi-hundred-megabyte Electron wrappers or legacy codebases dating back decades. Frames is written in pure **Swift 6 and SwiftUI**, leveraging Apple Silicon's dedicated **VideoToolbox** media decoders and Unified Memory architecture to deliver fluid 60fps / 120fps playback, buttery timeline scrubbing, and sub-second cold starts with minimal battery drain.
 
 The user interface adheres strictly to the **shadcn `base-luma`/`neutral`** (preset `b1VlK05Q`, with pointer cursor) design language: matte charcoal dark surfaces (`oklch(0.145 0 0)` / `#0a0a0a`), subtle border contours (`oklch(1 0 0 / 10%)`), crisp monochromatic neutral highlights (`oklch(0.985 0 0)` / `#fafafa`), and smooth pill-radius controls.
-
----
 
 ## ⚡️ Quick Install (1-Line Terminal Command)
 
@@ -46,77 +42,78 @@ Install Frames directly on your Mac with a single command — automatically hand
 
 > **What this does**: Automatically fetches the latest release, installs `Frames.app` into `/Applications`, clears macOS quarantine attributes (`xattr -dr com.apple.quarantine`), self-signs the local bundle, and launches Frames.
 
----
-
 ## Key Features
 
 ### 1. Pure Native Apple Silicon Media Engine
-* **Zero-Bloat Custom Architecture**: Built completely from scratch in Swift 6 without VLC or legacy C/C++ media player bloat.
-* **Pure Swift Matroska & WebM Demuxer**: High-performance zero-allocation EBML VINT streaming parser with $O(\log N)$ binary-search keyframe seeking for `.mkv` and `.webm`.
-* **Hardware-First VideoToolbox ASIC Pipeline**: Direct hardware decode for H.264, HEVC (8/10-bit HDR), VP9, AV1, and ProRes. Decoded frames live directly in Apple Silicon Unified Memory (`IOSurface`).
-* **Zero-Copy Metal 3 HDR Presentation**: Custom Metal shaders converting bi-planar NV12/P010 textures to RGB in 16-bit floating point with Rec.709, Rec.2020, and ST 2084 PQ / HLG EOTF optical transfer functions.
-* **120Hz ProMotion CADisplayLink Cadence**: Synced directly with macOS display refresh intervals, eliminating judder, frame tearing, and timing drift.
-* **Bit-Perfect CoreAudio Master Clock**: Hardware-driven audio DAC crystal oscillator timing synchronization keeps video and audio aligned to $< 1\text{ms}$.
-* **Ultra-Low Battery & Thermal Footprint**: Designed to sip less power than QuickTime and draw 2–4× less battery than VLC on Apple Silicon.
+
+- **Zero-Bloat Custom Architecture**: Built completely from scratch in Swift 6 without VLC or legacy C/C++ media player bloat.
+- **Pure Swift Matroska & WebM Demuxer**: High-performance zero-allocation EBML VINT streaming parser with $O(\log N)$ binary-search keyframe seeking for `.mkv` and `.webm`.
+- **Hardware-First VideoToolbox ASIC Pipeline**: Direct hardware decode for H.264, HEVC (8/10-bit HDR), VP9, AV1, and ProRes. Decoded frames live directly in Apple Silicon Unified Memory (`IOSurface`).
+- **Zero-Copy Metal 3 HDR Presentation**: Custom Metal shaders converting bi-planar NV12/P010 textures to RGB in 16-bit floating point with Rec.709, Rec.2020, and ST 2084 PQ / HLG EOTF optical transfer functions.
+- **120Hz ProMotion CADisplayLink Cadence**: Synced directly with macOS display refresh intervals, eliminating judder, frame tearing, and timing drift.
+- **Bit-Perfect CoreAudio Master Clock**: Hardware-driven audio DAC crystal oscillator timing synchronization keeps video and audio aligned to $< 1\text{ms}$.
+- **Ultra-Low Battery & Thermal Footprint**: Designed to sip less power than QuickTime and draw 2–4× less battery than VLC on Apple Silicon.
 
 ### 2. Media Dashboard & Library Sidebar
-* **Folder Management**: Connect any folder on your Mac; subdirectories are recursively indexed asynchronously without blocking the UI.
-* **Smart Organization**: Instant navigation across *All Videos*, *Recent*, *Favorites*, or custom pinned directories with live item counts.
-* **Sub-Millisecond Search & Sort**: Filter thousands of titles instantly by name, date added, duration, or file size with keyboard focus management.
-* **Adaptive View Modes**: Switch seamlessly between a 16:9 cinematic card grid and a compact list table.
-* **Persistent Progress**: Remembers playback timestamps and resumes where you left off.
+
+- **Folder Management**: Connect any folder on your Mac; subdirectories are recursively indexed asynchronously without blocking the UI.
+- **Smart Organization**: Instant navigation across _All Videos_, _Recent_, _Favorites_, or custom pinned directories with live item counts.
+- **Sub-Millisecond Search & Sort**: Filter thousands of titles instantly by name, date added, duration, or file size with keyboard focus management.
+- **Adaptive View Modes**: Switch seamlessly between a 16:9 cinematic card grid and a compact list table.
+- **Persistent Progress**: Remembers playback timestamps and resumes where you left off.
 
 ### 3. Native macOS Window & Fullscreen Architecture
-* **Native Spaces Fullscreen (`⌃⌘F` / `F`)**: Full macOS Spaces immersion with automatic menu bar and dock suppression using the standard macOS shortcut `⌃⌘F` (or `F` during playback).
-* **Windowed Desktop Fill / Zoom (`⌃⌥⌘F` / `Window -> Zoom`)**: Fills the current display space instantly without creating a new Space; accessible via macOS Zoom or `⌃⌥⌘F`.
+
+- **Native Spaces Fullscreen (`⌃⌘F` / `F`)**: Full macOS Spaces immersion with automatic menu bar and dock suppression using the standard macOS shortcut `⌃⌘F` (or `F` during playback).
+- **Windowed Desktop Fill / Zoom (`⌃⌥⌘F` / `Window -> Zoom`)**: Fills the current display space instantly without creating a new Space; accessible via macOS Zoom or `⌃⌥⌘F`.
 
 ### 4. Precision Subtitle Engine
-* Seamless support for external `.srt` and `.vtt` subtitles via drag-and-drop or file picker.
-* Real-time HTML tag stripping (`<i>`, `<b>`, `<font>`) and sub-millisecond timestamp parsing.
+
+- Seamless support for external `.srt` and `.vtt` subtitles via drag-and-drop or file picker.
+- Real-time HTML tag stripping (`<i>`, `<b>`, `<font>`) and sub-millisecond timestamp parsing.
 
 ### 5. In-App Production OTA Update Engine
-* **Non-Intrusive Update Discovery**: Asynchronous background query against GitHub Releases API with SemVer 2.0.0 parsing. Never forces disruptive silent updates.
-* **Liquid Glass Update Modal**: Sleek adaptive modal displaying version diff (`v1.2.0 → v1.3.0`), release notes highlights, download size, and real-time download progress.
-* **Granular User Control**: "Update & Restart", "Later", and "Skip this version" options, plus manual check affordance in App Menu (`Frames -> Check for Updates...`) and Command Palette.
-* **Atomic Bundle Swap & Clean Restart**: Validates package signature and bundle integrity, atomically replaces the application bundle, cleans quarantine flags, and smoothly restarts.
+
+- **Non-Intrusive Update Discovery**: Asynchronous background query against GitHub Releases API with SemVer 2.0.0 parsing. Never forces disruptive silent updates.
+- **Liquid Glass Update Modal**: Sleek adaptive modal displaying version diff (`v1.2.0 → v1.3.0`), release notes highlights, download size, and real-time download progress.
+- **Granular User Control**: "Update & Restart", "Later", and "Skip this version" options, plus manual check affordance in App Menu (`Frames -> Check for Updates...`) and Command Palette.
+- **Atomic Bundle Swap & Clean Restart**: Validates package signature and bundle integrity, atomically replaces the application bundle, cleans quarantine flags, and smoothly restarts.
 
 ### 6. Command Palette (`⌘K`) & High-Res Frame Capture (`⌘S`)
-* **Instant Keyboard Access**: Press `⌘K` from anywhere in the app to search and execute any command, switch themes, navigate folders, adjust audio/video playback, or check for updates.
-* **High-Res Frame Snapshot Engine (`⌘S`)**: Instant capture of native resolution video frames directly exported to `~/Pictures/Frames`.
-* **Timestamp Jump Expressions**: Jump directly to any position using expressions such as `1:23`, `01:15:00`, `90s`, `15m`, or relative offsets `+30s` / `-15s` via Command Palette.
+
+- **Instant Keyboard Access**: Press `⌘K` from anywhere in the app to search and execute any command, switch themes, navigate folders, adjust audio/video playback, or check for updates.
+- **High-Res Frame Snapshot Engine (`⌘S`)**: Instant capture of native resolution video frames directly exported to `~/Pictures/Frames`.
+- **Timestamp Jump Expressions**: Jump directly to any position using expressions such as `1:23`, `01:15:00`, `90s`, `15m`, or relative offsets `+30s` / `-15s` via Command Palette.
 
 ### 7. Native Settings Window (`⌘,`)
-* Comprehensive 5-tab native macOS preferences: General, Playback, Audio, Subtitles, and About.
-* Configurable hardware acceleration, ProMotion 120Hz sync, HDR tone mapping, subtitle styling, and battery saver guard.
 
----
+- Comprehensive 5-tab native macOS preferences: General, Playback, Audio, Subtitles, and About.
+- Configurable hardware acceleration, ProMotion 120Hz sync, HDR tone mapping, subtitle styling, and battery saver guard.
 
 ## Keyboard Shortcuts
 
 Designed for native macOS and keyboard-first navigation:
 
-| Key | Action |
-| :--- | :--- |
-| `Space` | Play / Pause |
-| `←` / `→` | Seek backward / forward 5 seconds |
-| `⇧←` / `⇧→` | Seek backward / forward 30 seconds |
-| `.` / `,` | Frame step forward / backward |
-| `↑` / `↓` | Volume adjust ($\pm 5\%$) |
-| `M` | Toggle mute |
-| `⌘S` | Capture high-resolution video frame snapshot |
-| `⌘K` | Open Command Palette |
-| `⌘,` | Open Preferences / Settings |
-| `⌃⌘F` or `F` | Toggle native macOS fullscreen (macOS default) |
-| `⌃⌥⌘F` / `Zoom` | Toggle windowed fullscreen / Zoom (macOS default) |
-| `⌘M` | Minimize window (macOS default) |
-| `⌘W` | Close window (macOS default) |
-| `[` / `]` | Decrease / Increase playback rate ($\pm 0.1\times$) |
-| `S` | Toggle subtitle track selector sheet |
-| `I` | Toggle Apple Silicon hardware stats HUD |
-| `⌘O` | Open video file(s) via native macOS dialog |
-| `Esc` | Return to Dashboard / Exit Fullscreen / Resign Search |
-
----
+| Key             | Action                                                |
+| :-------------- | :---------------------------------------------------- |
+| `Space`         | Play / Pause                                          |
+| `←` / `→`       | Seek backward / forward 5 seconds                     |
+| `⇧←` / `⇧→`     | Seek backward / forward 30 seconds                    |
+| `.` / `,`       | Frame step forward / backward                         |
+| `↑` / `↓`       | Volume adjust ($\pm 5\%$)                             |
+| `M`             | Toggle mute                                           |
+| `⌘S`            | Capture high-resolution video frame snapshot          |
+| `⌘K`            | Open Command Palette                                  |
+| `⌘,`            | Open Preferences / Settings                           |
+| `⌃⌘F` or `F`    | Toggle native macOS fullscreen (macOS default)        |
+| `⌃⌥⌘F` / `Zoom` | Toggle windowed fullscreen / Zoom (macOS default)     |
+| `⌘M`            | Minimize window (macOS default)                       |
+| `⌘W`            | Close window (macOS default)                          |
+| `[` / `]`       | Decrease / Increase playback rate ($\pm 0.1\times$)   |
+| `S`             | Toggle subtitle track selector sheet                  |
+| `I`             | Toggle Apple Silicon hardware stats HUD               |
+| `⌘O`            | Open video file(s) via native macOS dialog            |
+| `Esc`           | Return to Dashboard / Exit Fullscreen / Resign Search |
 
 ## Testing & Optimization Suite
 
@@ -176,14 +173,13 @@ RESULTS: 458 PASSED, 0 FAILED
 ==========================================
 ```
 
----
-
 ## Building from Source
 
 ### Prerequisites
-* macOS 14.0 or higher
-* Xcode 16.0 or higher with Command Line Tools
-* Apple Silicon Mac (M1, M2, M3, M4 series)
+
+- macOS 14.0 or higher
+- Xcode 16.0 or higher with Command Line Tools
+- Apple Silicon Mac (M1, M2, M3, M4 series)
 
 ### Build Commands
 
@@ -202,8 +198,6 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
   build
 ```
 
----
-
 ## Contributing & Community
 
 Contributions, feedback, and pull requests are warmly welcomed!
@@ -211,8 +205,6 @@ Contributions, feedback, and pull requests are warmly welcomed!
 - Read our [Contributing Guidelines](CONTRIBUTING.md) for details on code style, branch workflows, and PR verification.
 - Review our [Code of Conduct](CODE_OF_CONDUCT.md) for community standards.
 - Check our [Security Policy](SECURITY.md) for responsible vulnerability reporting.
-
----
 
 ## License
 

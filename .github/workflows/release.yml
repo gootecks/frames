@@ -55,7 +55,7 @@ jobs:
           mkdir -p dist
           ditto -c -k --keepParent "$APP" "dist/Frames-v${VERSION}-macOS.zip"
           cd dist
-          shasum -a 256 *.zip > SHA256SUMS.txt
+          shasum -a 256 -- *.zip > SHA256SUMS.txt
           cat SHA256SUMS.txt
 
       - name: Upload Release Artifacts
