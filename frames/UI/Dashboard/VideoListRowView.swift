@@ -1,7 +1,8 @@
-import SwiftUI
 import AppKit
+import SwiftUI
 
 // MARK: - Dedicated Video List Row View
+
 public struct VideoListRowView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     public let video: VideoItem
@@ -13,6 +14,7 @@ public struct VideoListRowView: View {
     public var onThumbnailHover: ((Bool) -> Void)?
 
     // MARK: - Mini Thumbnail Dimensions & Spec Constants
+
     public static let thumbnailWidth: CGFloat = 76
     public static let thumbnailHeight: CGFloat = 43
     public static let playBadgeDiameter: CGFloat = 28
@@ -37,9 +39,9 @@ public struct VideoListRowView: View {
         self.isHovered = isHovered
         self.containerWidth = containerWidth
         self.onHover = onHover
-        self._library = Bindable(wrappedValue: library)
+        _library = Bindable(wrappedValue: library)
         self.onPlayURL = onPlayURL
-        self._isThumbnailHovered = State(initialValue: initialThumbnailHovered)
+        _isThumbnailHovered = State(initialValue: initialThumbnailHovered)
         self.onThumbnailHover = onThumbnailHover
     }
 
@@ -55,7 +57,7 @@ public struct VideoListRowView: View {
         isThumbnailHoveredValue
     }
 
-    public static func shouldShowPlayOverlay(isThumbnailHovered: Bool, isRowHovered: Bool) -> Bool {
+    public static func shouldShowPlayOverlay(isThumbnailHovered: Bool, isRowHovered _: Bool) -> Bool {
         return isThumbnailHovered
     }
 
@@ -236,7 +238,8 @@ public struct VideoListRowView: View {
         .contextMenu {
             Button("Play in Frames") {
                 if FileManager.default.fileExists(atPath: video.url.path)
-                    || CommandLine.arguments.contains("--run-tests") {
+                    || CommandLine.arguments.contains("--run-tests")
+                {
                     onPlayURL(video.url)
                 } else {
                     library.verifyAndPruneMissingFiles()

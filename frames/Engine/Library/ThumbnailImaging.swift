@@ -17,7 +17,7 @@ nonisolated enum ThumbnailImaging {
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize,
         ]
         return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
     }
@@ -100,6 +100,6 @@ nonisolated enum ThumbnailImaging {
         guard duration > 0 else { return [0] }
         let start = min(duration * 0.10, 60.0)
         let step = duration * 0.05
-        return (0..<4).map { min(start + Double($0) * step, max(0, duration - 0.05)) }
+        return (0 ..< 4).map { min(start + Double($0) * step, max(0, duration - 0.05)) }
     }
 }

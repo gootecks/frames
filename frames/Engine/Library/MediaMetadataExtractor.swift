@@ -39,10 +39,18 @@ nonisolated enum MediaMetadataExtractor {
 
     static func resolutionLabel(width: Double, height: Double) -> String {
         let maxDim = max(width, height)
-        if maxDim >= 3800 { return "4K" }
-        if maxDim >= 2500 { return "2K" }
-        if maxDim >= 1800 { return "1080p" }
-        if maxDim >= 1200 { return "720p" }
+        if maxDim >= 3800 {
+            return "4K"
+        }
+        if maxDim >= 2500 {
+            return "2K"
+        }
+        if maxDim >= 1800 {
+            return "1080p"
+        }
+        if maxDim >= 1200 {
+            return "720p"
+        }
         return "SD"
     }
 
@@ -107,7 +115,9 @@ nonisolated enum MediaMetadataExtractor {
 
     private static func stringValue(in items: [AVMetadataItem], key: AVMetadataKey) async -> String? {
         for item in AVMetadataItem.metadataItems(from: items, withKey: key, keySpace: .common) {
-            if let value = try? await item.load(.stringValue), !value.isEmpty { return value }
+            if let value = try? await item.load(.stringValue), !value.isEmpty {
+                return value
+            }
         }
         return nil
     }
@@ -119,14 +129,18 @@ nonisolated enum MediaMetadataExtractor {
                   identifierSuffixes.contains(where: {
                       suffix.caseInsensitiveCompare($0) == .orderedSame
                   }) else { continue }
-            if let value = try? await item.load(.stringValue), !value.isEmpty { return value }
+            if let value = try? await item.load(.stringValue), !value.isEmpty {
+                return value
+            }
         }
         return nil
     }
 
     private static func dataValue(in items: [AVMetadataItem], key: AVMetadataKey) async -> Data? {
         for item in AVMetadataItem.metadataItems(from: items, withKey: key, keySpace: .common) {
-            if let data = try? await item.load(.dataValue), !data.isEmpty { return data }
+            if let data = try? await item.load(.dataValue), !data.isEmpty {
+                return data
+            }
         }
         return nil
     }
@@ -145,7 +159,9 @@ nonisolated enum MediaMetadataExtractor {
                 continue
             }
             last = image
-            if !ThumbnailImaging.isNearBlack(image) { return image }
+            if !ThumbnailImaging.isNearBlack(image) {
+                return image
+            }
         }
         return last
     }
@@ -175,7 +191,9 @@ nonisolated enum MediaMetadataExtractor {
         for target in ThumbnailImaging.frameTargets(duration: meta.duration) {
             guard let image = MatroskaFrameGrabber.grabFrame(from: demuxer, at: target) else { continue }
             last = image
-            if !ThumbnailImaging.isNearBlack(image) { break }
+            if !ThumbnailImaging.isNearBlack(image) {
+                break
+            }
         }
         if let image = last {
             meta.thumbnailJPEG = ThumbnailImaging.jpegData(image)

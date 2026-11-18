@@ -46,7 +46,8 @@ extension LibraryMetadataTests {
         let mediaURL = root.appendingPathComponent("media", isDirectory: true)
         guard let defaults = scratchDefaults(in: root),
               (try? fileManager.createDirectory(at: mediaURL, withIntermediateDirectories: true)) != nil,
-              let names = try? fileManager.contentsOfDirectory(atPath: fixtureDirectory.path) else {
+              let names = try? fileManager.contentsOfDirectory(atPath: fixtureDirectory.path)
+        else {
             check("Library Test Sandbox Created", false, root.path)
             return nil
         }

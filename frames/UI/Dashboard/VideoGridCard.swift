@@ -1,9 +1,10 @@
-import SwiftUI
 import AppKit
+import SwiftUI
 
 let goldenFavoriteColor = Color(red: 1.0, green: 0.8, blue: 0.0)
 
 // MARK: - Dedicated Video Grid Card View
+
 public struct VideoGridCardView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     public let video: VideoItem
@@ -23,7 +24,7 @@ public struct VideoGridCardView: View {
         self.video = video
         self.isHovered = isHovered
         self.onHover = onHover
-        self._library = Bindable(wrappedValue: library)
+        _library = Bindable(wrappedValue: library)
         self.onPlayURL = onPlayURL
     }
 
@@ -51,7 +52,7 @@ public struct VideoGridCardView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .aspectRatio(16/9, contentMode: .fit)
+                .aspectRatio(16 / 9, contentMode: .fit)
                 .clipped()
 
                 // Hover Play Overlay
@@ -212,7 +213,8 @@ public struct VideoGridCardView: View {
         .contextMenu {
             Button("Play in Frames") {
                 if FileManager.default.fileExists(atPath: video.url.path)
-                    || CommandLine.arguments.contains("--run-tests") {
+                    || CommandLine.arguments.contains("--run-tests")
+                {
                     onPlayURL(video.url)
                 } else {
                     library.verifyAndPruneMissingFiles()

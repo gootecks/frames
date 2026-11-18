@@ -3,7 +3,7 @@ import CoreGraphics
 import Foundation
 import ImageIO
 
-nonisolated final class LibraryTestBox<T: Sendable>: @unchecked Sendable {
+final nonisolated class LibraryTestBox<T: Sendable>: @unchecked Sendable {
     private let lock = NSLock()
     private var stored: T?
 
@@ -20,7 +20,7 @@ nonisolated final class LibraryTestBox<T: Sendable>: @unchecked Sendable {
     }
 }
 
-nonisolated final class ExtractionRecorder: @unchecked Sendable {
+final nonisolated class ExtractionRecorder: @unchecked Sendable {
     private let lock = NSLock()
     private var active = 0
     private var paths: [String] = []
@@ -76,7 +76,7 @@ enum LibraryMetadataTests {
         .deletingLastPathComponent()
         .appendingPathComponent("assets/test-fixtures/library", isDirectory: true)
 
-    static let fixtureCount = 8
+    nonisolated static let fixtureCount = 8
 
     static func run(_ report: @escaping (String, Bool, String) -> Void) {
         let check = Check(report: report)
