@@ -34,7 +34,7 @@ nonisolated enum MatroskaFrameGrabber {
         target: Double
     ) -> (packet: DemuxedPacket, isExact: Bool)? {
         var fallback: DemuxedPacket?
-        for _ in 0..<maxPacketsPerAttempt {
+        for _ in 0 ..< maxPacketsPerAttempt {
             guard let packet = try? demuxer.nextPacket() else { break }
             guard packet.trackNumber == track.trackNumber, packet.isKeyframe else { continue }
             if packet.pts >= target - 0.001 {
@@ -51,7 +51,7 @@ nonisolated enum MatroskaFrameGrabber {
         decoder: VideoToolboxDecoder,
         box: PixelBufferBox
     ) -> CGImage? {
-        for _ in 1..<maxDecodeFeeds {
+        for _ in 1 ..< maxDecodeFeeds {
             guard let packet = try? demuxer.nextPacket() else { break }
             guard packet.trackNumber == track.trackNumber else { continue }
             _ = decoder.decode(packet: packet)
@@ -64,13 +64,15 @@ nonisolated enum MatroskaFrameGrabber {
     }
 }
 
-private nonisolated final class PixelBufferBox: @unchecked Sendable {
+private final nonisolated class PixelBufferBox: @unchecked Sendable {
     private let lock = NSLock()
     private var buffer: CVPixelBuffer?
 
     func store(_ pixelBuffer: CVPixelBuffer) {
         lock.lock()
-        if buffer == nil { buffer = pixelBuffer }
+        if buffer == nil {
+            buffer = pixelBuffer
+        }
         lock.unlock()
     }
 
